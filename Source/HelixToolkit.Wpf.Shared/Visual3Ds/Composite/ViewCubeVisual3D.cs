@@ -24,6 +24,10 @@ namespace HelixToolkit.Wpf
     /// </summary>
     public class ViewCubeVisual3D : ModelVisual3D
     {
+        public static Brush[] CubeFaceColors = new Brush[6] { Brushes.Red, Brushes.Blue, Brushes.Green, Brushes.Orange, Brushes.White, Brushes.Black };
+        public static Dictionary<Brush, Brush> CubeTextColors = new Dictionary<Brush, Brush>();
+
+
         /// <summary>
         /// Identifies the <see cref="BackText"/> dependency property.
         /// </summary>
@@ -461,7 +465,8 @@ namespace HelixToolkit.Wpf
 
         private Brush GetCubefaceColor(int index)
         {
-            switch (index)
+            return CubeFaceColors[index];
+            /*switch (index)
             {
                 case 0:
                 case 1:
@@ -488,7 +493,7 @@ namespace HelixToolkit.Wpf
                     }
                 default:
                     return Brushes.White;
-            }
+            }*/
         }
 
         private void EnableDisableEdgeClicks()
@@ -656,6 +661,9 @@ namespace HelixToolkit.Wpf
         private Material CreateTextMaterial(Brush b, string text)
         {
             var grid = new Grid { Width = 20, Height = 20, Background = b };
+            Brush textColor = Brushes.White;
+            if (CubeTextColors.ContainsKey(b))
+                textColor = CubeTextColors[b];
             grid.Children.Add(
                 new TextBlock
                 {
@@ -663,7 +671,7 @@ namespace HelixToolkit.Wpf
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     FontSize = 15,
-                    Foreground = Brushes.White
+                    Foreground = textColor
                 });
             grid.Arrange(new Rect(new Point(0, 0), new Size(20, 20)));
 
